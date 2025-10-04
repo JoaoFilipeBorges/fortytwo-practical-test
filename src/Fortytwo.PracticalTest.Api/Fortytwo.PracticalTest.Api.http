@@ -1,0 +1,6 @@
+@Fortytwo.PracticalTest.Api_HostAddress = http://localhost:5296
+
+GET {{Fortytwo.PracticalTest.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
