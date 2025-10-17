@@ -1,0 +1,6 @@
+﻿services:
+  fortytwo.practicaltest.api:
+    image: fortytwo.practicaltest.api
+    build:
+      context: .
+      dockerfile: src/Fortytwo.PracticalTest.Api/Dockerfile
