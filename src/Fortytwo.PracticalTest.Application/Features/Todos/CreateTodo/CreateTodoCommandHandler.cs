@@ -1,4 +1,4 @@
-using Fortytwo.PracticalTest.Application.Interfaces;
+using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 using Fortytwo.PracticalTest.Domain.Entities;
 using MediatR;
 

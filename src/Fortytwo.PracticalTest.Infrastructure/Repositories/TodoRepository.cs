@@ -1,4 +1,5 @@
 using Fortytwo.PracticalTest.Application.Interfaces;
+using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 using Fortytwo.PracticalTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -37,7 +38,7 @@ public class TodoRepository(PracticalTestDbContext dbContext) : ITodoRepository
     {
         return await dbContext.Todos
             .Skip((page - 1) * pageSize)
-            .Take(10).Select(t => new ReadModel.Todo
+            .Take(pageSize).Select(t => new ReadModel.Todo
             {
                 Id = t.Id,
                 Title = t.Title,

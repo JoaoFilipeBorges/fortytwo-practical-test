@@ -2,7 +2,6 @@ using Fortytwo.PracticalTest.Api.Contracts.Todos;
 using Fortytwo.PracticalTest.Application.Features.Todos.CreateTodo;
 using Fortytwo.PracticalTest.Application.Features.Todos.GetTodoById;
 using Fortytwo.PracticalTest.Application.Features.Todos.GetTodos;
-using Fortytwo.PracticalTest.Application.ReadModel;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

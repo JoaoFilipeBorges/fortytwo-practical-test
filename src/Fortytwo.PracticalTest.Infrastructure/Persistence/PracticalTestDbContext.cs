@@ -8,12 +8,8 @@ public class PracticalTestDbContext : DbContext
     public DbSet<Todo> Todos { get; set; }
     public DbSet<User> Users { get; set; }
     
-    public string DbPath { get; }
-
-    public PracticalTestDbContext()
+    public PracticalTestDbContext(DbContextOptions<PracticalTestDbContext> options)
+        : base(options)
     {
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        DbPath = System.IO.Path.Join(path, "practicaltest.db");
     }
 }
