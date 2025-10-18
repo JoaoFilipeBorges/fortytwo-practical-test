@@ -1,7 +1,9 @@
-namespace Fortytwo.PracticalTest.Domain.Entities;
+namespace Fortytwo.PracticalTest.Application.ReadModel;
 
-public class Todo : BaseEntity
+public class Todo
 {
+    public int Id { get; set; }
+    
     public string Title { get; set; }
     
     public string Description { get; set; }
@@ -11,7 +13,6 @@ public class Todo : BaseEntity
     public DateTime DueDate { get; set; }
     
     public User Assignee { get; set; }
-    public int AssigneeId { get; set; }
     
-    public User Author { get; set; }
+    public User Creator { get; set; }
 }
