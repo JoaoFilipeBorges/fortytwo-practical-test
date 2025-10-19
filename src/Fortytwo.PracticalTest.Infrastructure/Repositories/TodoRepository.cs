@@ -1,4 +1,3 @@
-using Fortytwo.PracticalTest.Application.Interfaces;
 using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 using Fortytwo.PracticalTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
@@ -61,5 +60,6 @@ public class TodoRepository(PracticalTestDbContext dbContext) : ITodoRepository
     public async Task Create(Todo todo, CancellationToken cancellationToken)
     {
         await dbContext.Todos.AddAsync(todo, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 }

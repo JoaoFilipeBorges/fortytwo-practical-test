@@ -1,6 +1,8 @@
+using Fortytwo.PracticalTest.Application.ReadModel.External;
+
 namespace Fortytwo.PracticalTest.Application.Interfaces.Http;
 
-public interface IPraticalTestHttpClient<T>
+public interface IExternalTodoHttpClient
 {
-    Task<T?> GetAsync(int id, CancellationToken cancellationToken = default);
+    Task<ExternalTodo?> GetByIdAsync(int id, CancellationToken cancellationToken = default);
 }

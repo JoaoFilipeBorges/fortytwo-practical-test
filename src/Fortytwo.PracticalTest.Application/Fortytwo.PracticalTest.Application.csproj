@@ -16,8 +16,4 @@
     <ProjectReference Include="..\Fortytwo.PracticalTest.Domain\Fortytwo.PracticalTest.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Features\Users\CreateUser\" />
-  </ItemGroup>
-
 </Project>

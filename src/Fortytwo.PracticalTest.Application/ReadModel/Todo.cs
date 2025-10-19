@@ -15,4 +15,6 @@ public class Todo
     public User Assignee { get; set; }
     
     public User Creator { get; set; }
+    
+    public string ExternalTitle { get; set; }
 }
