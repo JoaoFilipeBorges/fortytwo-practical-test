@@ -1,6 +1,6 @@
 using Fortytwo.PracticalTest.Domain.Entities;
 
-namespace Fortytwo.PracticalTest.Application.Interfaces;
+namespace Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 
 public interface ITodoRepository
 {
