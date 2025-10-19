@@ -1,6 +1,6 @@
 namespace Fortytwo.PracticalTest.Api.Contracts.Login;
 
-public class LoginRequest
-{
-    
-}
+public record LoginRequest(
+    string Username,
+    string Password
+    );

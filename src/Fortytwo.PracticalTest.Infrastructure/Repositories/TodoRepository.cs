@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Fortytwo.PracticalTest.Infrastructure.Repositories;
 
-using Fortytwo.PracticalTest.Domain.Entities;
-using ReadModel = Fortytwo.PracticalTest.Application.ReadModel;
+using Domain.Entities;
+using ReadModel = Application.ReadModel;
 
 public class TodoRepository(PracticalTestDbContext dbContext) : ITodoRepository
 {

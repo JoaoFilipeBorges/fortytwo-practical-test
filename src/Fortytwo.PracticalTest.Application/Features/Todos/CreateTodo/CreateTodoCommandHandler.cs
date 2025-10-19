@@ -1,13 +1,22 @@
 using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 using Fortytwo.PracticalTest.Domain.Entities;
+using Fortytwo.PracticalTest.Domain.Exceptions;
 using MediatR;
 
 namespace Fortytwo.PracticalTest.Application.Features.Todos.CreateTodo;
 
-public class CreateTodoCommandHandler(ITodoRepository todoRepository) : IRequestHandler<CreateTodoCommand, int>
+public class CreateTodoCommandHandler(
+    IUserRepository userRepository,
+    ITodoRepository todoRepository) : IRequestHandler<CreateTodoCommand, int>
 {
     public async Task<int> Handle(CreateTodoCommand request, CancellationToken cancellationToken)
     {
+        var user = await userRepository.GetUserIdByUserName(request.UserInfo.UserName, cancellationToken);
+        if (user is null)
+        {
+            throw new UserNotFoundException($"User with username {request.UserInfo.UserName} not found.");
+        }
+        
         var todo = new Todo
         {
             Title = request.Title,

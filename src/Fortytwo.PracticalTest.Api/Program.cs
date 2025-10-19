@@ -1,3 +1,5 @@
+using Fortytwo.PracticalTest.Api.Auth;
+using Fortytwo.PracticalTest.Api.DI;
 using Fortytwo.PracticalTest.Application.Interfaces.Http;
 using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 using Fortytwo.PracticalTest.Infrastructure.Http;
@@ -18,16 +20,17 @@ namespace Fortytwo.PracticalTest.Api
             builder.Services.AddControllers();
             
             builder.Services.AddMediatR(cfg =>
-                cfg.RegisterServicesFromAssembly(typeof(Fortytwo.PracticalTest.Application.Features.Todos.GetTodoById.GetTodoByIdQueryHandler).Assembly));
+                cfg.RegisterServicesFromAssembly(typeof(Application.Features.Todos.GetTodoById.GetTodoByIdQueryHandler).Assembly));
             
             // Swagger generator
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwagger();
             
             // Memory Cache (used in the external todo Http Client)
             builder.Services.AddMemoryCache();
             
             // Repositories
             builder.Services.AddScoped<ITodoRepository, TodoRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             
             // EF Core DB context
             builder.Services.AddDbContext<PracticalTestDbContext>(options =>
@@ -36,7 +39,7 @@ namespace Fortytwo.PracticalTest.Api
                     "practicaltest.db")}"));
             
             
-            
+            // Custom Http client
             builder.Services.AddHttpClient<IExternalTodoHttpClient, ExternalTodoHttpClient>()
                 .AddTypedClient((httpClient, sp) =>
                 {
@@ -46,12 +49,17 @@ namespace Fortytwo.PracticalTest.Api
                     var cache = sp.GetRequiredService<IMemoryCache>();
                     return new ExternalTodoHttpClient(cacheDuration, baseAddress, httpClient, cache);
                 });
+
+
+            // Token generator
+            builder.Services.AddSingleton<JwtGenerator>();
             
-            
-            
+            // JWT configuration
+            builder.Services.AddAuthentication(builder.Configuration);
             
             var app = builder.Build();
 
+            // Ensure EF migration is launched
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<PracticalTestDbContext>();
@@ -71,6 +79,7 @@ namespace Fortytwo.PracticalTest.Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();
