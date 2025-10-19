@@ -1,5 +1,4 @@
 using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
-using Fortytwo.PracticalTest.Application.ReadModel.Mappings;
 using Fortytwo.PracticalTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,7 +12,24 @@ public class TodoRepository(PracticalTestDbContext dbContext) : ITodoRepository
 
     public async Task<TodoDto?> GetById(int id, CancellationToken cancellationToken)
     {
-        return await dbContext.Todos.Select(t => t.ToDto())
+        return await dbContext.Todos.Select(todo => new TodoDto
+            {
+                Id = todo.Id,
+                Title = todo.Title,
+                Description = todo.Description ?? "",
+                DueDate = todo.DueDate,
+                Done = todo.Done,
+                Assignee = todo.Assignee != null ? new UserDto
+                {
+                    Id = todo.AssigneeId.Value,
+                    UserName = todo.Assignee.UserName
+                } : null,
+                Creator = new UserDto
+                {
+                    Id = todo.CreatedBy,
+                    UserName = todo.Author.UserName
+                }
+            })
             .FirstOrDefaultAsync(td => td.Id == id, cancellationToken);
     }
     
@@ -22,7 +38,24 @@ public class TodoRepository(PracticalTestDbContext dbContext) : ITodoRepository
         var totalItems = await dbContext.Todos.CountAsync(cancellationToken);
         var items = await dbContext.Todos
             .Skip((page - 1) * pageSize)
-            .Take(pageSize).Select(t => t.ToDto())
+            .Take(pageSize).Select(todo => new TodoDto
+            {
+                Id = todo.Id,
+                Title = todo.Title,
+                Description = todo.Description ?? "",
+                DueDate = todo.DueDate,
+                Done = todo.Done,
+                Assignee = todo.Assignee != null ? new UserDto
+                {
+                    Id = todo.AssigneeId.Value,
+                    UserName = todo.Assignee.UserName
+                } : null,
+                Creator = new UserDto
+                {
+                    Id = todo.CreatedBy,
+                    UserName = todo.Author.UserName
+                }
+            })
             .ToListAsync(cancellationToken);
         
         return new PagedList<TodoDto>

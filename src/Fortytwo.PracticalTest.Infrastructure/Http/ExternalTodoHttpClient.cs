@@ -1,16 +1,17 @@
 using Fortytwo.PracticalTest.Application.Interfaces.Http;
 using Fortytwo.PracticalTest.Application.ReadModel.External;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace Fortytwo.PracticalTest.Infrastructure.Http;
 
 public class ExternalTodoHttpClient(
-    int cacheDurationInSeconds,
-    string address,
+    IOptions<ExternalTodoHttpClientOptions> configuration,
     HttpClient httpClient,
     IMemoryCache memoryCache) : IExternalTodoHttpClient
 {
+    
     public async Task<ExternalTodo?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
         if (memoryCache.TryGetValue(id, out ExternalTodo externalTodo))
@@ -20,7 +21,7 @@ public class ExternalTodoHttpClient(
         
         try
         {
-            var response = await httpClient.GetAsync($"{address}/{id}", cancellationToken);
+            var response = await httpClient.GetAsync($"{configuration.Value.BaseAddress}/{id}", cancellationToken);
             if (!response.IsSuccessStatusCode)
             {
                 
@@ -30,7 +31,7 @@ public class ExternalTodoHttpClient(
                 await response.Content.ReadAsStringAsync(cancellationToken));
             if (todo is not null)
             {
-                memoryCache.Set(id, todo, TimeSpan.FromSeconds(cacheDurationInSeconds));
+                memoryCache.Set(id, todo, TimeSpan.FromSeconds(configuration.Value.CacheDurationInSeconds));
             }
             
             

@@ -3,6 +3,7 @@ using System;
 using Fortytwo.PracticalTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fortytwo.PracticalTest.Infrastructure.Migrations
 {
     [DbContext(typeof(PracticalTestDbContext))]
-    partial class PracticalTestDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251019200930_fixTodos")]
+    partial class fixTodos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.10");

@@ -22,7 +22,12 @@ public class CreateTodoCommandHandler(
             Title = request.Title,
             Description = request.Description,
             Done = request.Done,
-            AssigneeId = request.Assignee
+            AssigneeId = request.Assignee,
+            CreatedBy = user.Id,
+            CreatedOn = DateTime.UtcNow,
+            UpdatedBy = user.Id,
+            UpdatedOn = DateTime.UtcNow,
+            Author = user
         };
         await todoRepository.Create(todo, cancellationToken);
 

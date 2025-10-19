@@ -33,20 +33,34 @@ namespace Fortytwo.PracticalTest.Api
             builder.Services.AddScoped<IUserRepository, UserRepository>();
             
             // EF Core DB context
+            // Ensure the folder exists
+            var dbFolder = Path.Combine(Environment.CurrentDirectory, "data");
+            if (!Directory.Exists(dbFolder))
+                Directory.CreateDirectory(dbFolder);
+
+            var dbPath = Path.Combine(dbFolder, "practicaltest.db");
+
+// Correctly build connection string
+            var connectionString = $"Data Source={dbPath}";
+
             builder.Services.AddDbContext<PracticalTestDbContext>(options =>
-                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlite(connectionString));
             
-            
+            builder.Services.Configure<ExternalTodoHttpClientOptions>(builder.Configuration.GetSection("ExternalTodoClient"));
             // Custom Http client
-            builder.Services.AddHttpClient<IExternalTodoHttpClient, ExternalTodoHttpClient>()
-                .AddTypedClient((httpClient, sp) =>
-                {
-                    var config = builder.Configuration.GetSection("ExternalTodoClient");
-                    var baseAddress = config.GetValue<string>("BaseAddress");
-                    var cacheDuration = config.GetValue<int>("CacheDurationInSeconds");
-                    var cache = sp.GetRequiredService<IMemoryCache>();
-                    return new ExternalTodoHttpClient(cacheDuration, baseAddress, httpClient, cache);
-                });
+            builder.Services.AddHttpClient<IExternalTodoHttpClient, ExternalTodoHttpClient>();
+            //     .AddTypedClient((httpClient, sp) =>
+            //     {
+            //         var config = builder.Configuration.GetSection("ExternalTodoClient");
+            //         var baseAddress = config.GetValue<string>("BaseAddress");
+            //         var cacheDuration = config.GetValue<int>("CacheDurationInSeconds");
+            //         var cache = sp.GetRequiredService<IMemoryCache>();
+            //         return new ExternalTodoHttpClient(new ExternalTodoHttpClientOptions
+            //         {
+            //             BaseAddress = baseAddress,
+            //             CacheDurationInSeconds = cacheDuration,
+            //         }, httpClient, cache);
+            //     });
 
 
             // Token generator
@@ -61,7 +75,7 @@ namespace Fortytwo.PracticalTest.Api
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<PracticalTestDbContext>();
-                db.Database.EnsureCreated();
+                db.Database.Migrate();
             }
             
             // Configure the HTTP request pipeline.

@@ -24,3 +24,7 @@ jobs:
       # Build the project
       - name: Build
         run: dotnet build --no-restore --configuration Release
+          
+      # Run tests (if you have test projects)
+      - name: Run tests
+        run: dotnet test --no-build --verbosity normal

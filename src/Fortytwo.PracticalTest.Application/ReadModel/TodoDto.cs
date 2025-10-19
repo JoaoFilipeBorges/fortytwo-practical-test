@@ -10,9 +10,9 @@ public class TodoDto
     
     public bool Done { get; set; }
     
-    public DateTime DueDate { get; set; }
+    public DateTime? DueDate { get; set; }
     
-    public UserDto Assignee { get; set; }
+    public UserDto? Assignee { get; set; }
     
     public UserDto Creator { get; set; }
     
