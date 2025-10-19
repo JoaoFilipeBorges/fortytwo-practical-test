@@ -1,4 +1,3 @@
-using System.Reflection;
 using FluentValidation;
 using Fortytwo.PracticalTest.Api.Auth;
 using Fortytwo.PracticalTest.Api.DI;
@@ -87,20 +86,5 @@ namespace Fortytwo.PracticalTest.Api
 
             app.Run();
         }
-        
-        // public static IHostBuilder CreateHostBuilder(string[] args)
-        //     => Host.CreateDefaultBuilder(args)
-        //         .ConfigureWebHostDefaults(
-        //             webBuilder => webBuilder.UseStartup<Startup>());
-        //
-        // public class Startup
-        // {
-        //     public void ConfigureServices(IServiceCollection services)
-        //         => services.AddDbContext<PracticalTestDbContext>();
-        //
-        //     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        //     {
-        //     }
-        // }
     }
 }

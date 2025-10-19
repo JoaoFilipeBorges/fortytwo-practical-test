@@ -35,6 +35,7 @@ public class CreateTodoCommandHandler(
             CreatedOn = DateTime.UtcNow,
             UpdatedBy = user.Id,
             UpdatedOn = DateTime.UtcNow,
+            DueDate = request.DueDate,
             Author = user
         };
         await todoRepository.Create(todo, cancellationToken);
