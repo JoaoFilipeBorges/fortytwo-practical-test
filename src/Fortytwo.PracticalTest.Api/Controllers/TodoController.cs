@@ -11,8 +11,7 @@ namespace Fortytwo.PracticalTest.Api.Controllers;
 
 [Authorize]
 [ApiController]
-//[ApiVersion("1.0")]
-[Route("api/v1.0/[controller]")]
+[Route("api/v1/[controller]")]
 public class TodoController(IMediator mediator) : PraticalTestBaseController
 {
     [HttpGet]

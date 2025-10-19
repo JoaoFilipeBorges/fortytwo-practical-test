@@ -6,4 +6,4 @@ namespace Fortytwo.PracticalTest.Application.Features.Todos.GetTodos;
 public record GetTodosQuery(
     int Page,
     int PageSize
-    ) : IRequest<IList<Todo>>;
+    ) : IRequest<PagedList<TodoDto>>;

@@ -1,6 +1,6 @@
 namespace Fortytwo.PracticalTest.Application.ReadModel;
 
-public class Todo
+public class TodoDto
 {
     public int Id { get; set; }
     
@@ -12,9 +12,9 @@ public class Todo
     
     public DateTime DueDate { get; set; }
     
-    public User Assignee { get; set; }
+    public UserDto Assignee { get; set; }
     
-    public User Creator { get; set; }
+    public UserDto Creator { get; set; }
     
     public string ExternalTitle { get; set; }
 }

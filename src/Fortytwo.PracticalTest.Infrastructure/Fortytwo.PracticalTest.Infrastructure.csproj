@@ -21,4 +21,8 @@
     <ProjectReference Include="..\Fortytwo.PracticalTest.Domain\Fortytwo.PracticalTest.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\Scripts\" />
+  </ItemGroup>
+
 </Project>

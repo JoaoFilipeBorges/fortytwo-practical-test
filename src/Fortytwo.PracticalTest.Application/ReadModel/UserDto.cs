@@ -1,6 +1,6 @@
 namespace Fortytwo.PracticalTest.Application.ReadModel;
 
-public class User
+public class UserDto
 {
     public int Id { get; set; }
     

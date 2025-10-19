@@ -1,60 +1,38 @@
 using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
+using Fortytwo.PracticalTest.Application.ReadModel.Mappings;
 using Fortytwo.PracticalTest.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 
 namespace Fortytwo.PracticalTest.Infrastructure.Repositories;
 
 using Domain.Entities;
-using ReadModel = Application.ReadModel;
+using Application.ReadModel;
 
 public class TodoRepository(PracticalTestDbContext dbContext) : ITodoRepository
 {
 
-    public async Task<ReadModel.Todo?> GetById(int id, CancellationToken cancellationToken)
+    public async Task<TodoDto?> GetById(int id, CancellationToken cancellationToken)
     {
-        return await dbContext.Todos.Select(t => new ReadModel.Todo
-            {
-                Id = t.Id,
-                Title = t.Title,
-                Description = t.Description,
-                DueDate = t.DueDate,
-                Done = t.Done,
-                Assignee = new ReadModel.User
-                {
-                    Id = t.AssigneeId,
-                    UserName = t.Assignee.UserName
-                },
-                Creator = new ReadModel.User
-                {
-                    Id = t.CreatedBy,
-                    UserName = t.Author.UserName
-                }
-            })
+        return await dbContext.Todos.Select(t => t.ToDto())
             .FirstOrDefaultAsync(td => td.Id == id, cancellationToken);
     }
     
-    public async Task<IList<ReadModel.Todo>> Get(int page, int pageSize, CancellationToken cancellationToken)
+    public async Task<PagedList<TodoDto>> Get(int page, int pageSize, CancellationToken cancellationToken)
     {
-        return await dbContext.Todos
+        var totalItems = await dbContext.Todos.CountAsync(cancellationToken);
+        var items = await dbContext.Todos
             .Skip((page - 1) * pageSize)
-            .Take(pageSize).Select(t => new ReadModel.Todo
-            {
-                Id = t.Id,
-                Title = t.Title,
-                Description = t.Description,
-                DueDate = t.DueDate,
-                Done = t.Done,
-                Assignee = new ReadModel.User
-                {
-                    Id = t.AssigneeId,
-                    UserName = t.Assignee.UserName
-                },
-                Creator = new ReadModel.User
-                {
-                    Id = t.CreatedBy,
-                    UserName = t.Author.UserName
-                }
-            }).ToListAsync(cancellationToken);
+            .Take(pageSize).Select(t => t.ToDto())
+            .ToListAsync(cancellationToken);
+        
+        return new PagedList<TodoDto>
+        {
+            Items = items,
+            Page = page,
+            PageSize = pageSize,
+            TotalItems = totalItems,
+            TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize)
+        };
     }
 
     public async Task Create(Todo todo, CancellationToken cancellationToken)

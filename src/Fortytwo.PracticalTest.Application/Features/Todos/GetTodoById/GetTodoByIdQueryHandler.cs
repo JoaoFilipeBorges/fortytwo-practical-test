@@ -8,9 +8,9 @@ namespace Fortytwo.PracticalTest.Application.Features.Todos.GetTodoById;
 
 public class GetTodoByIdQueryHandler(
     IExternalTodoHttpClient externalTodoHttpClient,
-    ITodoRepository todoRepository) : IRequestHandler<GetTodoByIdQuery, Todo>
+    ITodoRepository todoRepository) : IRequestHandler<GetTodoByIdQuery, TodoDto>
 {
-    public async Task<Todo> Handle(GetTodoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<TodoDto> Handle(GetTodoByIdQuery request, CancellationToken cancellationToken)
     {
         var todo = await todoRepository.GetById(request.Id, cancellationToken);
         if (todo is null)
