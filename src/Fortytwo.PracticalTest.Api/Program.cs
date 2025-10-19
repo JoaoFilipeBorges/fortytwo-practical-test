@@ -6,7 +6,6 @@ using Fortytwo.PracticalTest.Infrastructure.Http;
 using Fortytwo.PracticalTest.Infrastructure.Persistence;
 using Fortytwo.PracticalTest.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Caching.Memory;
 
 namespace Fortytwo.PracticalTest.Api
 {
@@ -39,28 +38,14 @@ namespace Fortytwo.PracticalTest.Api
                 Directory.CreateDirectory(dbFolder);
 
             var dbPath = Path.Combine(dbFolder, "practicaltest.db");
-
-// Correctly build connection string
             var connectionString = $"Data Source={dbPath}";
 
             builder.Services.AddDbContext<PracticalTestDbContext>(options =>
                 options.UseSqlite(connectionString));
             
-            builder.Services.Configure<ExternalTodoHttpClientOptions>(builder.Configuration.GetSection("ExternalTodoClient"));
             // Custom Http client
+            builder.Services.Configure<ExternalTodoHttpClientOptions>(builder.Configuration.GetSection("ExternalTodoClient"));
             builder.Services.AddHttpClient<IExternalTodoHttpClient, ExternalTodoHttpClient>();
-            //     .AddTypedClient((httpClient, sp) =>
-            //     {
-            //         var config = builder.Configuration.GetSection("ExternalTodoClient");
-            //         var baseAddress = config.GetValue<string>("BaseAddress");
-            //         var cacheDuration = config.GetValue<int>("CacheDurationInSeconds");
-            //         var cache = sp.GetRequiredService<IMemoryCache>();
-            //         return new ExternalTodoHttpClient(new ExternalTodoHttpClientOptions
-            //         {
-            //             BaseAddress = baseAddress,
-            //             CacheDurationInSeconds = cacheDuration,
-            //         }, httpClient, cache);
-            //     });
 
 
             // Token generator
