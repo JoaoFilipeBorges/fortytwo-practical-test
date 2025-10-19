@@ -1,5 +1,8 @@
+using System.Reflection;
+using FluentValidation;
 using Fortytwo.PracticalTest.Api.Auth;
 using Fortytwo.PracticalTest.Api.DI;
+using Fortytwo.PracticalTest.Application.Features.Todos.CreateTodo;
 using Fortytwo.PracticalTest.Application.Interfaces.Http;
 using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 using Fortytwo.PracticalTest.Infrastructure.Http;
@@ -47,7 +50,8 @@ namespace Fortytwo.PracticalTest.Api
             builder.Services.Configure<ExternalTodoHttpClientOptions>(builder.Configuration.GetSection("ExternalTodoClient"));
             builder.Services.AddHttpClient<IExternalTodoHttpClient, ExternalTodoHttpClient>();
 
-
+            builder.Services.AddValidatorsFromAssembly(typeof(CreateTodoValidator).Assembly);
+            
             // Token generator
             builder.Services.AddSingleton<JwtGenerator>();
             

@@ -1,4 +1,5 @@
 using FluentAssertions;
+using FluentValidation;
 using Fortytwo.PracticalTest.Application.Features.Todos.CreateTodo;
 using Fortytwo.PracticalTest.Application.Interfaces.Persistence;
 using Fortytwo.PracticalTest.Domain.Common;
@@ -14,12 +15,22 @@ public class TodosTests
     private readonly Mock<IUserRepository> UserRepositoryMock;
     private readonly Mock<ITodoRepository> TodoRepositoryMock;
     private readonly CreateTodoCommandHandler CreateTodoCommandHandler;
+    private readonly Mock<IValidator<CreateTodoCommand>> ValidatorMock;
 
     public TodosTests()
     {
         UserRepositoryMock = new Mock<IUserRepository>();
         TodoRepositoryMock = new Mock<ITodoRepository>();
-        CreateTodoCommandHandler = new CreateTodoCommandHandler(UserRepositoryMock.Object, TodoRepositoryMock.Object);
+        ValidatorMock = new Mock<IValidator<CreateTodoCommand>>();
+        
+        ValidatorMock
+            .Setup(v => v.ValidateAsync(It.IsAny<CreateTodoCommand>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(new FluentValidation.Results.ValidationResult());
+        
+        CreateTodoCommandHandler = new CreateTodoCommandHandler(
+            UserRepositoryMock.Object,
+            TodoRepositoryMock.Object,
+            ValidatorMock.Object);
     }
     
     [Fact]
