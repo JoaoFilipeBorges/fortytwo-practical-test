@@ -10,7 +10,7 @@ public class UsersConfigurations : IEntityTypeConfiguration<User>
     {
         builder.ToTable(TableNames.UserTableName);
         builder.HasKey(x => x.Id);
-        builder.Property(x => x.Id).IsRequired();
+        builder.Property(x => x.Id).IsRequired().ValueGeneratedOnAdd();
         builder.Property(x => x.Email).IsRequired();
         builder.Property(x => x.UserName).IsRequired();
         builder.Property(x => x.ProfilePicUrl).IsRequired();
@@ -18,6 +18,8 @@ public class UsersConfigurations : IEntityTypeConfiguration<User>
         builder.Property(x => x.CreatedOn);
         builder.Property(x => x.UpdatedBy);
         builder.Property(x => x.UpdatedOn);
+        
+        builder.HasIndex(x => x.UserName).IsUnique();
         
     }
 }

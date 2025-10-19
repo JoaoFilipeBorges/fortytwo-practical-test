@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Fortytwo.PracticalTest.Infrastructure.Migrations
 {
     [DbContext(typeof(PracticalTestDbContext))]
-    [Migration("20251018205703_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251019191438_insertAdmin")]
+    partial class insertAdmin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

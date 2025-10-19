@@ -34,9 +34,7 @@ namespace Fortytwo.PracticalTest.Api
             
             // EF Core DB context
             builder.Services.AddDbContext<PracticalTestDbContext>(options =>
-                options.UseSqlite($"Data Source={Path.Combine(
-                    Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
-                    "practicaltest.db")}"));
+                options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
             
             
             // Custom Http client
@@ -86,5 +84,20 @@ namespace Fortytwo.PracticalTest.Api
 
             app.Run();
         }
+        
+        // public static IHostBuilder CreateHostBuilder(string[] args)
+        //     => Host.CreateDefaultBuilder(args)
+        //         .ConfigureWebHostDefaults(
+        //             webBuilder => webBuilder.UseStartup<Startup>());
+        //
+        // public class Startup
+        // {
+        //     public void ConfigureServices(IServiceCollection services)
+        //         => services.AddDbContext<PracticalTestDbContext>();
+        //
+        //     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        //     {
+        //     }
+        // }
     }
 }
